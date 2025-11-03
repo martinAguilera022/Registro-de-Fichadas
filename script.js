@@ -5,12 +5,17 @@ function generarPlanilla() {
 	const nombre = document.getElementById("nombre").value;
 	const legajo = document.getElementById("legajo").value;
 	const sector = document.getElementById("sector").value;
-	const fechaInicio = new Date(document.getElementById("fechaInicio").value);
+	const fechaInput = document.getElementById("fechaInicio").value; // "YYYY-MM-DD"
 	const Icono = "./IconoGranja.png";
-	if (!nombre || !legajo || !sector || !fechaInicio) {
+
+	if (!nombre || !legajo || !sector || !fechaInput) {
 		alert("Por favor, completá todos los campos.");
 		return;
 	}
+
+	// 🔹 Crear fecha respetando el día exacto
+	const [year, month, day] = fechaInput.split("-").map(Number);
+	const fechaInicio = new Date(year, month - 1, day); // mes empieza en 0
 
 	let tabla = `
     <h2 class="tituloFicha">Granja Tres Arroyos S.A.</h2>
