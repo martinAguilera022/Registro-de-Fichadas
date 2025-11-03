@@ -1,0 +1,139 @@
+body {
+	font-family: "Segoe UI", sans-serif;
+	background: #f5f7fa;
+	color: #333;
+	padding: 20px;
+}
+
+.container {
+	max-width: 900px;
+	margin: auto;
+	background: white;
+	padding: 25px;
+	border-radius: 15px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+	text-align: center;
+}
+
+.form {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	justify-content: center;
+	margin-bottom: 20px;
+}
+
+input,
+button,
+label {
+	padding: 10px;
+	border-radius: 6px;
+	border: 1px solid #ccc;
+}
+.tituloFicha {
+	justify-self: center;
+	text-align: center;
+}
+.fichaInfo {
+	display: flex;
+	justify-content: space-between;
+}
+.icono {
+	width: 120px;
+	filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.8));
+}
+.firma {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+}
+.firmaText {
+	margin-top: 65px;
+}
+.info {
+	padding: 0.3125rem;
+}
+button {
+	background: #2e7d32;
+	color: white;
+	border: none;
+	cursor: pointer;
+	transition: background 0.2s;
+}
+
+button:hover {
+	background: #1b5e20;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 20px;
+}
+input.hora {
+	width: 100%;
+	border: none;
+	text-align: center;
+	padding: 5px;
+	background: #f8f9fa;
+	border-radius: 5px;
+}
+
+input.hora:focus,
+input.observacion:focus {
+	background: #fff;
+	outline: 2px solid #4caf50;
+}
+
+input.observacion {
+	width: 95%;
+	border: none;
+	padding: 5px;
+	background: #f8f9fa;
+	border-radius: 5px;
+}
+
+th,
+td {
+	border: 1px solid #ccc;
+	padding: 8px;
+	text-align: center;
+}
+
+@media (max-width: 768px) {
+	.form {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.form input,
+	.form button,
+	.form label {
+		width: 100%;
+		margin-bottom: 10px;
+	}
+
+	.fichaInfo {
+		flex-direction: column;
+		align-items: center;
+	}
+
+	table {
+		display: block;
+		overflow-x: auto; /* scroll horizontal */
+		width: 100%;
+	}
+
+	th,
+	td {
+		font-size: 0.8rem; /* tamaño un poco más pequeño */
+		padding: 6px;
+	}
+}
+
+.hidden {
+	display: none;
+}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planilla Quincenal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Generador de Planilla Quincenal</h1>
+
+        <div class="form">
+            <input type="text" id="nombre" placeholder="Nombre y Apellido" value="Aguilera,Cristian Adolfo">
+
+            <input type="text" id="legajo" placeholder="Legajo N°" value="6455">
+            <input type="text" id="sector" placeholder="Sector" value="Supervisor de Carga de Aves Vivas">
+            <label>Fecha de inicio:</label>
+            <input type="date" id="fechaInicio" required>
+            <button id="generar">Generar planilla</button>
+        </div>
+
+        <div id="tablaContainer"></div>
+
+        <button id="descargarExcel" class="hidden"> Descargar Excel</button>
+        <button id="descargarPDF" class="hidden"> Descargar PDF</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
