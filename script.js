@@ -86,7 +86,6 @@ document.getElementById("descargarExcel").addEventListener("click", () => {
 // Descarga en PDF usando html2canvas
 document.getElementById("descargarPDF").addEventListener("click", async () => {
 	const { jsPDF } = window.jspdf;
-
 	const tabla = document.querySelector("#tablaContainer");
 
 	// Guardar ancho original
@@ -107,12 +106,9 @@ document.getElementById("descargarPDF").addEventListener("click", async () => {
 
 	const imgData = canvas.toDataURL("image/png");
 
-	// Obtener dimensiones de la imagen
 	const imgWidth = canvas.width;
 	const imgHeight = canvas.height;
-
-	// Crear PDF con ancho A4 horizontal y altura proporcional a la imagen
-	const pdfWidth = 842; // A4 horizontal pt
+	const pdfWidth = 842;
 	const ratio = pdfWidth / imgWidth;
 	const pdfHeight = imgHeight * ratio;
 
@@ -122,17 +118,60 @@ document.getElementById("descargarPDF").addEventListener("click", async () => {
 		format: [pdfWidth, pdfHeight],
 	});
 
-	// Margen deseado
-	const margin = 20; // puedes aumentar o disminuir
-
-	// Escalar imagen considerando el margen
+	const margin = 20;
 	const scaledWidth = pdfWidth - 2 * margin;
 	const scaledHeight = pdfHeight - 2 * margin;
 
-	// Agregar imagen al PDF con margen
 	pdf.addImage(imgData, "PNG", margin, margin, scaledWidth, scaledHeight);
 
+	// Crear blob del PDF
+	const pdfBlob = pdf.output("blob");
+	const pdfUrl = URL.createObjectURL(pdfBlob);
+	const pdfFile = new File([pdfBlob], "planilla_quincenal.pdf", {
+		type: "application/pdf",
+	});
+
+	// Guardar PDF localmente
 	pdf.save("planilla_quincenal.pdf");
+
+	// 🔹 Mostrar o crear botón de acción
+	let shareBtn = document.getElementById("compartirPDF");
+	if (!shareBtn) {
+		shareBtn = document.createElement("button");
+		shareBtn.id = "compartirPDF";
+		shareBtn.textContent = "📤 Compartir o Abrir PDF";
+		shareBtn.style.marginTop = "15px";
+		shareBtn.style.padding = "10px 15px";
+		shareBtn.style.border = "none";
+		shareBtn.style.borderRadius = "8px";
+		shareBtn.style.backgroundColor = "#007bff";
+		shareBtn.style.color = "white";
+		shareBtn.style.fontSize = "16px";
+		shareBtn.style.cursor = "pointer";
+		document.body.appendChild(shareBtn);
+	}
+
+	shareBtn.onclick = async () => {
+		// 🌐 Si el navegador permite compartir (solo móviles con HTTPS)
+		if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
+			try {
+				await navigator.share({
+					title: "Planilla Quincenal",
+					text: "Te envío mi planilla en PDF",
+					files: [pdfFile],
+				});
+			} catch (err) {
+				console.warn("Compartir cancelado o no soportado:", err);
+				window.open(pdfUrl, "_blank");
+			}
+		} else {
+			// 🖥️ En PC o sin soporte → abrir PDF en nueva pestaña
+			window.open(pdfUrl, "_blank");
+			alert(
+				"📄 El navegador no permite compartir directamente.\nEl PDF se abrirá para que lo descargues o envíes manualmente."
+			);
+		}
+	};
 });
 
 // Recuperar si hay datos previos
