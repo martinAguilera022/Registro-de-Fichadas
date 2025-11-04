@@ -90,9 +90,7 @@ document.getElementById("descargarPDF").addEventListener("click", async () => {
 
 	// Guardar ancho original
 	const originalWidth = tabla.style.width;
-
-	// Forzar ancho amplio antes de capturar
-	tabla.style.width = "1080px";
+	tabla.style.width = "1080px"; // Forzar ancho para escritorio
 
 	// Capturar con html2canvas
 	const canvas = await html2canvas(tabla, {
@@ -106,6 +104,7 @@ document.getElementById("descargarPDF").addEventListener("click", async () => {
 
 	const imgData = canvas.toDataURL("image/png");
 
+	// Crear PDF
 	const imgWidth = canvas.width;
 	const imgHeight = canvas.height;
 	const pdfWidth = 842;
@@ -134,44 +133,33 @@ document.getElementById("descargarPDF").addEventListener("click", async () => {
 	// Guardar PDF localmente
 	pdf.save("planilla_quincenal.pdf");
 
-	// 🔹 Mostrar o crear botón de acción
-	let shareBtn = document.getElementById("compartirPDF");
-	if (!shareBtn) {
-		shareBtn = document.createElement("button");
-		shareBtn.id = "compartirPDF";
-		shareBtn.textContent = "📤 Compartir o Abrir PDF";
-		shareBtn.style.marginTop = "15px";
-		shareBtn.style.padding = "10px 15px";
-		shareBtn.style.border = "none";
-		shareBtn.style.borderRadius = "8px";
-		shareBtn.style.backgroundColor = "#007bff";
-		shareBtn.style.color = "white";
-		shareBtn.style.fontSize = "16px";
-		shareBtn.style.cursor = "pointer";
-		document.body.appendChild(shareBtn);
-	}
-
-	shareBtn.onclick = async () => {
-		// 🌐 Si el navegador permite compartir (solo móviles con HTTPS)
-		if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
-			try {
-				await navigator.share({
-					title: "Planilla Quincenal",
-					text: "Te envío mi planilla en PDF",
-					files: [pdfFile],
-				});
-			} catch (err) {
-				console.warn("Compartir cancelado o no soportado:", err);
+	// Mostrar alerta con SweetAlert2
+	Swal.fire({
+		title: "✅ PDF descargado correctamente",
+		text: "¿Deseas abrirlo o compartirlo?",
+		icon: "success",
+		showCancelButton: true,
+		confirmButtonText: "Compartir",
+		cancelButtonText: "Cerrar",
+		confirmButtonColor: "#2e7d32",
+	}).then(async (result) => {
+		if (result.isConfirmed) {
+			if (navigator.share) {
+				try {
+					await navigator.share({
+						title: "Planilla Quincenal",
+						text: "Te envío la planilla quincenal generada.",
+						files: [pdfFile],
+					});
+				} catch (error) {
+					console.log("Compartir cancelado o no disponible");
+					window.open(pdfUrl, "_blank");
+				}
+			} else {
 				window.open(pdfUrl, "_blank");
 			}
-		} else {
-			// 🖥️ En PC o sin soporte → abrir PDF en nueva pestaña
-			window.open(pdfUrl, "_blank");
-			alert(
-				"📄 El navegador no permite compartir directamente.\nEl PDF se abrirá para que lo descargues o envíes manualmente."
-			);
 		}
-	};
+	});
 });
 
 // Recuperar si hay datos previos
