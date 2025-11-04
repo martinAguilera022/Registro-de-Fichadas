@@ -108,7 +108,9 @@ td {
 		flex-direction: column;
 		align-items: stretch;
 	}
-
+	body {
+		padding: 0px;
+	}
 	.form input,
 	.form button,
 	.form label {
